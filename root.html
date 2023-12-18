@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function gcd(a, b) {
+            while (b !== 0) {
+                [a, b] = [b, a % b];
+            }
+            return a;
+        }
+
+        function primRoots(modulo) {
+            var roots = [];
+            var required_set = new Set(Array.from({ length: modulo - 1 }, (_, i) => i + 1).filter(num => gcd(num, modulo) === 1));
+
+            for (var g = 1; g < modulo; g++) {
+                var actual_set = new Set(Array.from({ length: modulo - 1 }, (_, i) => (g ** (i + 1)) % modulo));
+                if (required_set.size === actual_set.size && [...required_set].every(num => actual_set.has(num))) {
+                    roots.push(g);
+                }
+            }
+            return roots;
+        }
+
+        function calculatePrimitiveRoots() {
+            var modulo = document.getElementById('p').value;
+            var primitive_roots = primRoots(modulo);
+            document.writeln(primitive_roots);
+        }
+        
+    </script>
+</head>
+<body>
+    <form class="form">
+        <h1 class="form-title">Вычисление обратного корня</h1>
+        <div class="form-group">
+            <input class="form-input" placeholder=" " type="text" id="p"/>
+            <label class="form-label">P=</label>
+        </div>
+
+        <input class="form-button" type="button" value="Ответ" onclick="calculatePrimitiveRoots()" >
+    </form>
+</body>
+</html>
